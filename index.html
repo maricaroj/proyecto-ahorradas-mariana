@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-info-dark">
+
+</html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://kit.fontawesome.com/348feffef2.js" crossorigin="anonymous"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <header>
+    <!-- INICIO BARRA NAVEGACION -->
+    <nav class="navbar has-shadow is-spaced is-info" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <div class="navbar-item is-size-2">
+          <i class="fas fa-hand-holding-usd mx-2"></i>
+          <h1 class="is-size-2">AhorrAdas</h1>
+        </div>
+        <a role="button" id="navbar-burger" class="navbar-burger is-align-self-center" aria-label="menu"
+          aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end is-size-5">
+          <a id="btn-balance" class="navbar-item">
+            <i class="far fa-chart-bar mx-2 "></i>
+            Balance
+          </a>
+          <a id="btn-categories" class="navbar-item">
+            <i class="fas fa-tags mx-2"></i>
+            Categorías
+          </a>
+          <a id="btn-reports" class="navbar-item">
+            <i class="fas fa-chart-pie mx-2"></i>
+            Reportes
+          </a>
+        </div>
+      </div>
+      </div>
+    </nav>
+    <!-- FIN BARRA NAVEGACION -->
+  </header>
+
+  <main class="mt-6">
+
+    <!-- INICIO SECCION BALANCE -->
+    <section id="balance-section" class="container px-6">
+      <div class="tile is-ancestor is-justify-content-center">
+        <!-- INICIO BOX BALANCE -->
+        <div class="tile is-3 is-vertical is-parent fit-content">
+          <div class="tile is-child box">
+            <p class="subtitle has-text-weight-medium">Balance</p>
+            <div class="columns is-mobile is-justify-content-space-between px-5 py-3">
+              <p class="is-size-6">Ganancias</p>
+              <p class="has-text-success has-text-weight-medium">+$0</p>
+            </div>
+            <div class="columns is-mobile is-justify-content-space-between px-5 py-3">
+              <p class="is-size-6">Gastos</p>
+              <p class="has-text-danger has-text-weight-medium">-$0</p>
+            </div>
+            <div class="columns is-mobile is-justify-content-space-between px-5">
+              <p class="is-size-5">Total</p>
+              <p class="has-text-weight-bold">+$0</p>
+            </div>
+          </div>
+          <!-- INICIO BOX FILTROS -->
+          <div class="tile is-child box fit-content">
+            <div class="columns is-justify-content-space-between is-flex-wrap-wrap mb-0">
+              <p class="subtitle has-text-weight-medium mb-0 px-4">Filtros</p>
+              <button id="btn-hide-filters" class="button is-size-7 is-link is-inverted">Ocultar filtros</button>
+              <button id="btn-show-filters" class="button is-size-7 is-link is-inverted is-hidden">Mostrar
+                filtros</button>
+            </div>
+
+            <div id="filters" class="column">
+              <div class="py-2">
+                <label for="filters-type" class="label">Tipo</label>
+                <div class="select is-small is-fullwidth">
+                  <select id="filters-type">
+                    <option value="Todas">Todas</option>
+                    <option value="Gasto">Gasto</option>
+                    <option value="Ganancia">Ganancia</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="py-2">
+                <label for="filters-categories" class="label">Categorías</label>
+                <div class="select is-small is-fullwidth">
+                  <select id="filters-categories">
+                  </select>
+                </div>
+              </div>
+
+              <div class="py-2">
+                <label for="filters-date" class="label">Dede</label>
+                <input id="filters-date" type="date" class="input is-small">
+              </div>
+
+              <div class="py-2">
+                <label for="filters-order" class="label">Ordenar por</label>
+                <div class="select is-small is-fullwidth">
+                  <select id="filters-order">
+                    <option value="Mas reciente">Mas reciente</option>
+                    <option value="Menos reciente">Menos reciente</option>
+                    <option value="Mayor monto">Mayor monto</option>
+                    <option value="Menor monto">Menor monto</option>
+                    <option value="A/Z">A/Z</option>
+                    <option value="Z/A">Z/A</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- FIN BOX FILTROS -->
+
+        <!-- INICIO BOX OPERACIONES -->
+        <div class="tile is-8 is-flex-desktop is-flex-tablet is-parent fit-content">
+          <div class="tile is-child box p-6 ">
+            <div class="columns is-justify-content-space-between">
+              <p class="subtitle has-text-weight-medium">Operaciones</p>
+              <button id="btn-new-operation" class="button is-link is-size-7-mobile">+ Nueva Operación</button>
+            </div>
+            <div id="without-operations">
+              <div class="column is-6 is-offset-3">
+                <figure class="image">
+                  <img src="./img/operaciones.svg">
+                </figure>
+              </div>
+              <div class="column is-align-items-center">
+                <p class="title is-size-4 is-size-6-mobile has-text-centered">Sin resultados</p>
+                <p class="subtitle is-size-6 is-size-7-mobile has-text-centered">Cambia los filtros o agrega operaciones
+                </p>
+              </div>
+            </div>
+            <div id="operations-list" class="columns has-text-weight-medium m-0 is-hidden">
+              <div class="column is-3">Descripción</div>
+              <div class="column has-text-centered is-2">Categoría</div>
+              <div class="column has-text-centered is-3">Fecha</div>
+              <div class="column has-text-centered is-2">Monto</div>
+              <div class="column has-text-centered is-2">Acciones</div>
+            </div>
+            <div id="add-new-operation"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- FIN BOX OPERACIONES -->
+    </section>
+
+    <!-- SECCION FORMULARIO NUEVA OPERACION -->
+    <section id="form-operation" class="is-hidden">
+      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-4 py-4">
+        <h2 class="title is-size-4 has-text-weight-bold">Nueva Operación</h2>
+        <div class="field">
+          <label for="operation-description" class="label">Descripción</label>
+          <div class="control">
+            <input id="operation-description" class="input is-small" type="text">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-amount" class="label">Monto</label>
+          <div class="control">
+            <input id="operation-amount" class="input is-small" type="number" value="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-type" class="label">Tipo</label>
+          <div class="control">
+            <div class="select is-small is-fullwidth">
+              <select id="operation-type">
+                <option>Gasto</option>
+                <option>Ganancia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-categories" class="label">Categorías</label>
+          <div class="control">
+            <div class="select is-small is-fullwidth">
+              <select id="operation-categories">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-date" class="label">Fecha</label>
+          <div class="control">
+            <input id="operation-date" class="input is-small" type="date">
+          </div>
+        </div>
+        <div class="field is-grouped is-justify-content-flex-end pt-5">
+          <p class="control">
+            <button id="btn-cancel-operation" class="button">Cancelar</button>
+          </p>
+          <p class="control">
+            <button id="btn-add-operation" class="button is-link">Agregar</button>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- FIN SECCION FORMULARIO EDITAR OPERACION -->
+
+    <section id="form-edit-operation" class="is-hidden">
+      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-4 py-4">
+        <h2 class="title is-size-4 has-text-weight-bold">Editar Operación</h2>
+        <div class="field">
+          <label for="operation-edit-description" class="label">Descripción</label>
+          <div class="control">
+            <input id="operation-edit-description" class="input is-small" type="text">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-edit-amount" class="label">Monto</label>
+          <div class="control">
+            <input id="operation-edit-amount" class="input is-small" type="number" value="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-edit-type" class="label">Tipo</label>
+          <div class="control">
+            <div class="select is-small is-fullwidth">
+              <select id="operation-type">
+                <option>Gasto</option>
+                <option>Ganancia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-edit-categories" class="label">Categorías</label>
+          <div class="control">
+            <div class="select is-small is-fullwidth">
+              <select id="operation-edit-categories">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="operation-edit-date" class="label">Fecha</label>
+          <div class="control">
+            <input id="operation-edit-date" class="input is-small" type="date">
+          </div>
+        </div>
+        <div class="field is-grouped is-justify-content-flex-end pt-5">
+          <p class="control">
+            <button id="btn-cancel-edit-operation" class="button">Cancelar</button>
+          </p>
+          <p class="control">
+            <button id="btn-edit-operation" class="button is-link">Editar</button>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- FIN SECCION FORMULARIO EDITAR OPERACION -->
+
+    <!-- INICIO SECCION CATEGORIAS -->
+    <section id="categories-section" class="is-hidden">
+      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-4 pt-4 pb-6">
+        <h2 class="title is-size-3 has-text-weight-bold">Categorías</h2>
+        <div class="field">
+          <label for="category-name" class="label">Nombre</label>
+          <div class="field is-grouped">
+            <div class="control is-expanded">
+              <input id="category-name" class="input is-small" type="text">
+            </div>
+            <div class="control">
+              <button id="btn-add-category" class="button is-link is-small">Agregar</button>
+            </div>
+          </div>
+          <div id="categories-list"></div>
+        </div>
+      </div>
+    </section>
+    <!-- FIN SECCION CATEGORIAS -->
+
+    <!-- INICIO SECCION EDITAR CATEGORIA -->
+    <section id="edit-category-section" class="is-hidden">
+      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-4 pt-4 pb-6">
+        <h2 class="title is-size-3 has-text-weight-bold">Editar Categoría</h2>
+        <div class="field">
+          <label for="edit-category-name" class="label">Nombre</label>
+          <div class="field is-grouped">
+            <div class="control is-expanded">
+              <input id="edit-category-name" class="input is-small" type="text">
+            </div>
+            <div class="control">
+              <button id="btn-cancel-edit-category" class="button is-small" onclick="hideEditSection()">Cancelar</button>
+              <button id="btn-edit-category" class="button is-link is-small">Editar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FIN SECCION EDITAR CATEGORIA -->
+
+    <!-- INICIO SECCION REPORTES -->
+    <section id="reports-section" class="is-hidden">
+      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-5 py-4 fit-content">
+        <div class="field">
+          <p class="tile is-size-3 has-text-weight-bold">Reportes</p>
+          <div class="column is-6 is-offset-3">
+            <figure class="image">
+              <img src="./img/reportes.svg">
+            </figure>
+          </div>
+          <div class="column is-align-items-center">
+            <p class="title is-size-4 is-size-6-mobile has-text-centered">Operaciones insuficientes</p>
+            <p class="subtitle is-size-6 is-size-7-mobile has-text-centered">Prueba agregando más operaciones</p>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div> 
+    </section>
+    <!-- FIN SECCION REPORTES -->
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.min.js"></script>
+  <script src="./main.js"></script>
+</body>
+
+</html>
