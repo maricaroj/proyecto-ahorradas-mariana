@@ -181,8 +181,8 @@
           <div class="control">
             <div class="select is-small is-fullwidth">
               <select id="operation-type">
-                <option>Gasto</option>
-                <option>Ganancia</option>
+                <option value="Gasto">Gasto</option>
+                <option value="Ganancia">Ganancia</option>
               </select>
             </div>
           </div>
@@ -216,6 +216,7 @@
     </section>
     <!-- FIN SECCION FORMULARIO EDITAR OPERACION -->
 
+    <!-- INICIO SECCION FORMULARIO EDITAR OPERACION -->
     <section id="form-edit-operation" class="is-hidden">
       <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-4 py-4">
         <h2 class="title is-size-4 has-text-weight-bold">Editar Operación</h2>
@@ -237,9 +238,9 @@
           <label for="operation-edit-type" class="label">Tipo</label>
           <div class="control">
             <div class="select is-small is-fullwidth">
-              <select id="operation-type">
-                <option>Gasto</option>
-                <option>Ganancia</option>
+              <select id="operation-edit-type">
+                <option value="Gasto">Gasto</option>
+                <option value="Ganancia">Ganancia</option>
               </select>
             </div>
           </div>
@@ -263,7 +264,7 @@
         </div>
         <div class="field is-grouped is-justify-content-flex-end pt-5">
           <p class="control">
-            <button id="btn-cancel-edit-operation" class="button">Cancelar</button>
+            <button id="btn-cancel-edit-operation" class="button" onclick="ShowSectionOperations()">Cancelar</button>
           </p>
           <p class="control">
             <button id="btn-edit-operation" class="button is-link">Editar</button>
