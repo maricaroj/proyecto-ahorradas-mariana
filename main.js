@@ -7,10 +7,17 @@ const btnShowFilters = document.getElementById("btn-show-filters");
 const btnHideFilters = document.getElementById("btn-hide-filters");
 const btnCancelOperation = document.getElementById("btn-cancel-operation");
 const btnAddOperation = document.getElementById("btn-add-operation");
+const btnAddCategory = document.getElementById("btn-add-category");
+const btnEditCategory = document.getElementById("btn-edit-category");
+const btnEditOperation = document.getElementById("btn-edit-operation");
+
 
 const navbarBasicExample = document.getElementById("navbarBasicExample");
 const formOperation = document.getElementById("form-operation");
 const balanceSection = document.getElementById("balance-section");
+const balanceGanancia = document.getElementById("balance-ganancias");
+const balanceGasto = document.getElementById("balance-gastos");
+const balanceTotal = document.getElementById("balance-total");
 const categoriesSection = document.getElementById("categories-section");
 const operationsList = document.getElementById("operations-list");
 const addNewOperation = document.getElementById("add-new-operation");
@@ -27,7 +34,15 @@ const filtersType = document.getElementById("filters-type");
 const filtersCategories = document.getElementById("filters-categories");
 const filtersOrder = document.getElementById("filters-order");
 const formEditOperation = document.getElementById("form-edit-operation");
-
+const inputCategories = document.getElementById("category-name");
+const categoriesList = document.getElementById("categories-list");
+const editCategorySection = document.getElementById("edit-category-section");
+const inputEditCategory = document.getElementById("edit-category-name");
+const operationEditDescription = document.getElementById("operation-edit-description");
+const operationEditAmount = document.getElementById("operation-edit-amount");
+const operationEditType = document.getElementById("operation-edit-type");
+const operationEditDate = document.getElementById("operation-edit-date");
+const operationEditCategories = document.getElementById("operation-edit-categories");
 
 
 btnBalance.addEventListener("click", () => {
@@ -141,6 +156,10 @@ btnAddOperation.addEventListener("click", () => {
     fecha: operationDate.value,
   };
 
+  if (newOperation.tipo === "Gasto") {
+    newOperation.monto = Number(newOperation.monto) * -1;
+  }
+
   operations.push(newOperation);
   localStorage.setItem("operacionesStorage", JSON.stringify(operations));
   const getOperacionesStorage = JSON.parse(
@@ -160,8 +179,8 @@ const operationsHtml = (operations) => {
   for (let i = 0; i < operations.length; i++) {
     const monto =
       operations[i].tipo === "Ganancia"
-        ? `+$${operations[i].monto}`
-        : `-$${operations[i].monto}`;
+        ? `$${operations[i].monto}`
+        : `$${operations[i].monto}`;
     const color =
       operations[i].tipo === "Ganancia"
         ? "has-text-success"
@@ -188,14 +207,11 @@ operations =
 operationsHtml(operations);
 checkOperations(operations);
 
-// EDITAR OPERACION
 
-const btnEditOperation = document.getElementById("btn-edit-operation");
-const operationEditDescription = document.getElementById("operation-edit-description");
-const operationEditAmount = document.getElementById("operation-edit-amount");
-const operationEditType = document.getElementById("operation-edit-type");
-const operationEditDate = document.getElementById("operation-edit-date");
-const operationEditCategories = document.getElementById("operation-edit-categories");
+
+                                              // EDITAR OPERACIONES
+
+
 
 const hideSectionsEditOperation = () => {
   categoriesSection.classList.add("is-hidden");
@@ -213,56 +229,45 @@ const ShowSectionOperations = () => {
   balanceSection.classList.remove("is-hidden");
 };
 
-// EDITAR OPERACIONES
 
 // posición en el arrego de la operación a editar
 let position;
-const editOperation = (operation) =>{
+const editOperation = (operation) => {
   hideSectionsEditOperation();
   position = operations.findIndex((elem) => elem.id === operation);
-  operationEditDescription.value = operations[position].descripcion
-  operationEditAmount.value = operations[position].monto
-  operationEditType.value = operations[position].tipo
-  operationEditCategories.value = operations[position].categoria
-  operationEditDate.value = operations[position].fecha
-  return position
-}
+  operationEditDescription.value = operations[position].descripcion;
+  operationEditAmount.value = operations[position].monto;
+  operationEditType.value = operations[position].tipo;
+  operationEditCategories.value = operations[position].categoria;
+  operationEditDate.value = operations[position].fecha;
+  return position;
+};
 
-btnEditOperation.addEventListener('click', () => {
-
-  operations[position].descripcion = operationEditDescription.value 
-  operations[position].monto = operationEditAmount.value 
-  operations[position].tipo = operationEditType.value 
-  operations[position].categoria = operationEditCategories.value 
-  operations[position].fecha = operationEditDate.value 
+btnEditOperation.addEventListener("click", () => {
+  operations[position].descripcion = operationEditDescription.value;
+  operations[position].monto = operationEditAmount.value;
+  operations[position].tipo = operationEditType.value;
+  operations[position].categoria = operationEditCategories.value;
+  operations[position].fecha = operationEditDate.value;
 
   localStorage.setItem("operacionesStorage", JSON.stringify(operations));
   operationsHtml(operations);
 
-  ShowSectionOperations()
-})
+  ShowSectionOperations();
+});
 
-// ELIMINAR OPERACIONES
+                                                // ELIMINAR OPERACIONES
 
-const deleteOperation = (operation) =>{
+const deleteOperation = (operation) => {
   const value = operations.findIndex((elem) => elem.id === operation);
   if (value >= 0) {
     operations.splice(value, 1);
     localStorage.setItem("operacionesStorage", JSON.stringify(operations));
     operationsHtml(operations);
   }
-}
+};
 
-
-// CATEGORIAS
-const inputCategories = document.getElementById("category-name");
-const categoriesList = document.getElementById("categories-list");
-const btnAddCategory = document.getElementById("btn-add-category");
-const btnEditCategory = document.getElementById("btn-edit-category");
-
-const editCategorySection = document.getElementById("edit-category-section");
-const inputEditCategory = document.getElementById("edit-category-name");
-
+                                                // CATEGORIAS
 
 
 // AGREGAR NUEVA CATEGORIA
@@ -301,8 +306,8 @@ let index;
 const editCategory = (category) => {
   hideSectionsEdit();
   index = categories.findIndex((elem) => elem.id === Number(category));
-  inputEditCategory.value = categories[index].nombre
-  return index
+  inputEditCategory.value = categories[index].nombre;
+  return index;
 };
 
 btnEditCategory.addEventListener("click", () => {
@@ -317,7 +322,6 @@ btnEditCategory.addEventListener("click", () => {
 // ELIMINAR UNA CATEGORIA
 
 const deleteCategory = (category) => {
-  const categoryName = categories.find((elem) => elem.id == category);
 
   const value = categories.findIndex((elem) => elem.id == category);
   if (value >= 0) {
@@ -326,18 +330,9 @@ const deleteCategory = (category) => {
     categoriesHTML(categories);
     categoriesSelect(categories);
   }
-  // operations.forEach(() => {
-  //   const index = operations.findIndex(
-  //     (operation) => operation.categoria === categoryName.nombre
-  //   );
-  //   if (index >= 0) {
-  //     operations.splice(index, 1);
-  //   }
-  //   operationsHtml(operations);
-  // });
 };
 
-// PINTAR SECCION
+// PINTAR SECCION CATEGORIA
 const categoriesHTML = (categories) => {
   categoriesList.innerHTML = "";
   for (let i = 0; i < categories.length; i++) {
@@ -354,7 +349,7 @@ const categoriesHTML = (categories) => {
   }
 };
 
-// PINTAR EN LOS SELECT
+// PINTAR EN LOS SELECT DE CATEGORIA
 
 const categoriesSelect = (categories) => {
   operationCategories.innerHTML = "";
@@ -374,53 +369,152 @@ categories =
 categoriesHTML(categories);
 categoriesSelect(categories);
 
-// FILTROS
-const filtrar = (e) => {
-  let atr = "";
-  if (e.target.id === "filters-type") {
-    atr = "tipo";
-  }
-  if (e.target.id === "filters-categories") {
-    atr = "categoria";
-  }
+                                                    // BALANCE
 
-  const result = operations.filter(operation => operation[atr] === e.target.value)
-  e.target.value === "Todas" ? operationsHtml(operations) : operationsHtml(result);
+const balanceData = (operaciones) => {
+  return operaciones.reduce(
+    (balance, operacion) => {
+      if (operacion.tipo === "Ganancia") {
+        return {
+          ...balance,
+          ganancias: balance.ganancias + operacion.monto,
+          total: balance.total + operacion.monto,
+        };
+      }
+
+      if (operacion.tipo === "Gasto") {
+        return {
+          ...balance,
+          gastos: balance.gastos + operacion.monto,
+          total: balance.total + operacion.monto,
+        };
+      }
+    },
+    {
+      ganancias: 0,
+      gastos: 0,
+      total: 0,
+    }
+  );
 };
 
-const filtrarFechaMayorOIgual = (e) => {
-  const result = operations.filter(operation => operation.fecha >= e.target.value)
-  operationsHtml(result)
+const balanceHTML = (operaciones) => {
+  const objBalance = balanceData(operaciones);
+
+  balanceTotal.classList.remove("has-text-danger", "has-text-success");
+
+  if (objBalance.total > 0) {
+    balanceTotal.classList.add("has-text-success");
+  }
+  if (objBalance.total < 0) {
+    balanceTotal.classList.add("has-text-danger");
+  }
+
+  balanceGanancia.innerHTML = `$${objBalance["ganancias"]}`;
+  balanceGasto.innerHTML = `$${objBalance["gastos"]}`;
+  balanceTotal.innerHTML = `$${objBalance["total"]}`;
 };
 
-const ordenarMasMenosReciente = (operacion, orden) =>{
-  let result
-  if (orden === 'ASC') {
-    result = [...operacion].sort((a,b) => a.fecha > b.fecha ? 1 : -1)
+
+                                                  // FILTROS
+
+const filtrarTipo = (tipo, operaciones) =>
+  operaciones.filter((operacion) => operacion.tipo === tipo);
+
+const filtrarCategoria = (categoria, operaciones) =>
+  operaciones.filter((operacion) => operacion.categoria === categoria);
+
+const filtrarFechaMayorOIgual = (fecha, operaciones) =>
+  operaciones.filter(
+    (operacion) =>
+      new Date(operacion.fecha).getTime() >= new Date(fecha).getTime()
+  );
+
+const ordenarMasMenosReciente = (operaciones, orden) => {
+  const newArr = [...operaciones];
+  let result;
+  if (orden === "ASC") {
+    result = newArr.sort((a, b) => (a.fecha > b.fecha ? 1 : -1));
   } else {
-    result = [...operacion].sort((a,b) => a.fecha < b.fecha ? 1 : -1)
+    result = newArr.sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
   }
-  operationsHtml(result)
-}
+  return result;
+};
+
+const ordenarMayorMenorMonto = (operaciones, orden) => {
+  const newArr = [...operaciones];
+  let result;
+  if (orden === "ASC") {
+    result = newArr.sort((a, b) =>
+      Number(a.monto) > Number(b.monto) ? 1 : -1
+    );
+  } else {
+    result = newArr.sort((a, b) =>
+      Number(a.monto) < Number(b.monto) ? 1 : -1
+    );
+  }
+  return result;
+};
+
+const ordenarAZ_ZA = (operaciones, orden) => {
+  const newArr = [...operaciones];
+  let result;
+  if (orden === "A-Z") {
+    result = newArr.sort((a, b) => (a.descripcion > b.descripcion ? 1 : -1));
+  } else {
+    result = newArr.sort((a, b) => (a.descripcion < b.descripcion ? 1 : -1));
+  }
+  return result;
+};
 
 const filtrarOperaciones = () => {
-  const orden = filtersOrder.value
+  const tipo = filtersType.value;
+  const categoria = filtersCategories.value;
+  const fecha = filtersDate.value.replace(/-/g, "/");
+  const orden = filtersOrder.value;
 
   let operaciones = operations;
 
+  if (tipo !== "Todas") {
+    operaciones = filtrarTipo(tipo, operaciones);
+  }
+
+  if (categoria !== "Todas") {
+    operaciones = filtrarCategoria(categoria, operaciones);
+  }
+
+  operaciones = filtrarFechaMayorOIgual(fecha, operaciones);
+
   switch (orden) {
     case "Mas reciente":
-      operaciones = ordenarMasMenosReciente(operations, "DESC")
+      operaciones = ordenarMasMenosReciente(operaciones, "DESC");
       break;
     case "Menos reciente":
-      operaciones = ordenarMasMenosReciente(operations, "ASC")
-  
+      operaciones = ordenarMasMenosReciente(operaciones, "ASC");
+      break;
+    case "Mayor monto":
+      operaciones = ordenarMayorMenorMonto(operaciones, "DESC");
+      break;
+    case "Menor monto":
+      operaciones = ordenarMayorMenorMonto(operaciones, "ASC");
+      break;
+    case "A/Z":
+      operaciones = ordenarAZ_ZA(operaciones, "A-Z");
+      break;
+    case "Z/A":
+      operaciones = ordenarAZ_ZA(operaciones, "Z-A");
+      break;
     default:
       break;
   }
-}
 
-filtersType.addEventListener("change", (e) => filtrar(e));
-filtersCategories.addEventListener("change", (e) => filtrar(e));
-filtersDate.addEventListener("change", (e) => filtrarFechaMayorOIgual(e));
-filtersOrder.addEventListener('change', filtrarOperaciones)
+  operationsHtml(operaciones);
+  balanceHTML(operaciones);
+};
+
+filtersType.addEventListener("change", filtrarOperaciones);
+filtersCategories.addEventListener("change", filtrarOperaciones);
+filtersDate.addEventListener("change", filtrarOperaciones);
+filtersOrder.addEventListener("change", filtrarOperaciones);
+
+filtrarOperaciones();
