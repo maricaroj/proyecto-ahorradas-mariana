@@ -470,8 +470,10 @@ const ordenarAZ_ZA = (operaciones, orden) => {
 const filtrarOperaciones = () => {
   const tipo = filtersType.value;
   const categoria = filtersCategories.value;
-  const fecha = filtersDate.value.replace(/-/g, "/");
+  const fecha = filtersDate.value;
   const orden = filtersOrder.value;
+
+  console.log(fecha);
 
   let operaciones = operations;
 
