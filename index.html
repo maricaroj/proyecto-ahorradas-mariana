@@ -20,11 +20,9 @@
   <meta property="twitter:description" content="Con esta aplicacion puedes llevar un registro de tus gastos y ganancias.">
   <meta property="twitter:image" content="https://github.com/maricaroj/proyecto-ahorradas-mariana/blob/master/img/ahorradas.screen.png?raw=true">
   <!-- LINKS -->
-
   <link rel="shortcut icon" href="./img/fav.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
   <link rel="stylesheet" href="./styles.css">
-  <script src="https://kit.fontawesome.com/348feffef2.js" crossorigin="anonymous"></script>
   <title>AhorrAda's</title>
 </head>
 
@@ -73,7 +71,7 @@
         <!-- INICIO BOX BALANCE -->
         <div class="tile is-3 is-vertical is-parent fit-content">
           <div class="tile is-child box">
-            <p class="subtitle has-text-weight-medium">Balance</p>
+            <p class="title is-size-3 has-text-weight-bold">Balance</p>
             <div class="columns is-mobile is-justify-content-space-between px-5 py-3">
               <p class="is-size-6">Ganancias</p>
               <p id="balance-ganancias" class="has-text-success has-text-weight-medium">+$0</p>
@@ -92,10 +90,8 @@
             <div class="columns is-justify-content-space-between is-flex-wrap-wrap mb-0">
               <p class="subtitle has-text-weight-medium mb-0 px-4">Filtros</p>
               <button id="btn-hide-filters" class="button is-size-7 is-link is-inverted">Ocultar filtros</button>
-              <button id="btn-show-filters" class="button is-size-7 is-link is-inverted is-hidden">Mostrar
-                filtros</button>
+              <button id="btn-show-filters" class="button is-size-7 is-link is-inverted is-hidden">Mostrar filtros</button>
             </div>
-
             <div id="filters" class="column">
               <div class="py-2">
                 <label for="filters-type" class="label">Tipo</label>
@@ -107,7 +103,6 @@
                   </select>
                 </div>
               </div>
-
               <div class="py-2">
                 <label for="filters-categories" class="label">Categorías</label>
                 <div class="select is-small is-fullwidth">
@@ -115,12 +110,10 @@
                   </select>
                 </div>
               </div>
-
               <div class="py-2">
                 <label for="filters-date" class="label">Dede</label>
                 <input id="filters-date" type="date" class="input is-small">
               </div>
-
               <div class="py-2">
                 <label for="filters-order" class="label">Ordenar por</label>
                 <div class="select is-small is-fullwidth">
@@ -183,14 +176,12 @@
             <input id="operation-description" class="input is-small" type="text">
           </div>
         </div>
-
         <div class="field">
           <label for="operation-amount" class="label">Monto</label>
           <div class="control">
             <input id="operation-amount" class="input is-small" type="number" value="0">
           </div>
         </div>
-
         <div class="field">
           <label for="operation-type" class="label">Tipo</label>
           <div class="control">
@@ -202,7 +193,6 @@
             </div>
           </div>
         </div>
-
         <div class="field">
           <label for="operation-categories" class="label">Categorías</label>
           <div class="control">
@@ -212,7 +202,6 @@
             </div>
           </div>
         </div>
-
         <div class="field">
           <label for="operation-date" class="label">Fecha</label>
           <div class="control">
@@ -241,14 +230,12 @@
             <input id="operation-edit-description" class="input is-small" type="text">
           </div>
         </div>
-
         <div class="field">
           <label for="operation-edit-amount" class="label">Monto</label>
           <div class="control">
             <input id="operation-edit-amount" class="input is-small" type="number" value="0">
           </div>
         </div>
-
         <div class="field">
           <label for="operation-edit-type" class="label">Tipo</label>
           <div class="control">
@@ -260,7 +247,6 @@
             </div>
           </div>
         </div>
-
         <div class="field">
           <label for="operation-edit-categories" class="label">Categorías</label>
           <div class="control">
@@ -270,7 +256,6 @@
             </div>
           </div>
         </div>
-
         <div class="field">
           <label for="operation-edit-date" class="label">Fecha</label>
           <div class="control">
@@ -331,9 +316,10 @@
 
     <!-- INICIO SECCION REPORTES -->
     <section id="reports-section" class="is-hidden">
-      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-5 py-4 fit-content">
-        <div class="field">
-          <p class="tile is-size-3 has-text-weight-bold">Reportes</p>
+      <div class="box column is-6 is-offset-3 is-10-mobile is-offset-1-mobile px-5 py-4 fit-content mb-5">
+        <p class="tile is-size-3 has-text-weight-bold">Reportes</p>
+        <!-- INICIO SECCION SIN REPORTES -->
+        <div id="without-reports" class="field">
           <div class="column is-6 is-offset-3">
             <figure class="image">
               <img src="./img/reportes.svg">
@@ -344,15 +330,63 @@
             <p class="subtitle is-size-6 is-size-7-mobile has-text-centered">Prueba agregando más operaciones</p>
           </div>
         </div>
+        <!-- FIN SECCION SIN REPORTES -->
+
+        <!-- INCIO LISTADO REPORTES -->
+        <article id="with-reports" class="is-hidden mb-2"> 
+        <div  class="column has-text-weight-medium m-0 mt-6 ">
+          <!-- RESUMEN -->
+          <p class="subtitle has-text-weight-medium">Resumen</p>
+          <div class="columns m-0 is-mobile is-justify-content-space-between">
+            <div class="column is-6">Categoría con mayor ganancia</div>
+            <div id="resumen-categ-mayor-ganancia"></div>
+          </div>
+          <div class="columns m-0 is-mobile is-justify-content-space-between">
+            <div class="column is-6">Categoría con mayor gasto</div>
+            <div id="resumen-categ-mayor-gasto"></div>
+          </div>
+          <div class="columns m-0 is-mobile is-justify-content-space-between">
+            <div class="column is-6">Categoría con mayor balance</div>
+            <div id="resumen-categ-mayor-balance"></div>
+          </div>
+          <div class="columns m-0 is-mobile is-justify-content-space-between">
+            <div class="column is-6">Mes con mayor ganancia</div>
+            <div id="resumen-mes-mayor-ganancia"></div>
+          </div>
+          <div class="columns m-0 is-mobile is-justify-content-space-between">
+            <div class="column is-6">Mes con mayor gasto</div>
+            <div id="resumen-mes-mayor-ganancia"></div>
+          </div>
+        </div>
+        <!-- TOTALES POR CATEGORIA -->
+        <p class="subtitle has-text-weight-medium mt-6">Totales por categorías</p>
+        <div class="columns has-text-weight-medium m-0">
+          <div class="column has-text-centered is-3">Categoría</div>
+          <div class="column has-text-centered is-3">Ganancias</div>
+          <div class="column has-text-centered is-3">Gastos</div>
+          <div class="column has-text-centered is-3">Balance</div>
+        </div>
+        <div id="report-categories-total"></div>
+
+        <!-- TOTALES POR MES -->
+        <p class="subtitle has-text-weight-medium mt-6">Totales por mes</p>
+        <div class="columns has-text-weight-medium m-0">
+          <div class="column has-text-centered is-3">Mes</div>
+          <div class="column has-text-centered is-3">Ganancias</div>
+          <div class="column has-text-centered is-3">Gastos</div>
+          <div class="column has-text-centered is-3">Balance</div>
+        </div>
+        <div id="report-mes-total"></div>
+
+      </article>
+      <!-- FIN LISTADO DE REPORTES -->
       </div>
-      </div>
-      </div> 
     </section>
     <!-- FIN SECCION REPORTES -->
   </main>
-
+  <!-- SCRIPTS -->
+  <script src="https://kit.fontawesome.com/348feffef2.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.min.js"></script>
   <script src="./main.js"></script>
 </body>
-
 </html>

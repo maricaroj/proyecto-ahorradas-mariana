@@ -118,12 +118,12 @@ btnShowFilters.addEventListener("click", () => {
 // FUNCION NUEVA OPERACION
 
 let categories = [
-  { id: 1, nombre: "Comida" },
-  { id: 2, nombre: "Educacion" },
-  { id: 3, nombre: "Salidas" },
-  { id: 4, nombre: "Servcios" },
-  { id: 5, nombre: "Trabajo" },
-  { id: 6, nombre: "Transporte" },
+  { id: uuid.v4(), nombre: "Comida" },
+  { id: uuid.v4(), nombre: "Educacion" },
+  { id: uuid.v4(), nombre: "Salidas" },
+  { id: uuid.v4(), nombre: "Servcios" },
+  { id: uuid.v4(), nombre: "Trabajo" },
+  { id: uuid.v4(), nombre: "Transporte" },
 ];
 
 const resetFormOperation = () => {
@@ -162,12 +162,12 @@ btnAddOperation.addEventListener("click", () => {
 
   operations.push(newOperation);
   localStorage.setItem("operacionesStorage", JSON.stringify(operations));
-  const getOperacionesStorage = JSON.parse(
-    localStorage.getItem("operacionesStorage")
-  );
+  const getOperacionesStorage = JSON.parse(localStorage.getItem("operacionesStorage"));
 
   resetFormOperation();
   operationsHtml(getOperacionesStorage);
+  balanceHTML(getOperacionesStorage)
+  filtrarOperaciones();
 
   formOperation.classList.add("is-hidden");
   balanceSection.classList.remove("is-hidden");
@@ -192,9 +192,9 @@ const operationsHtml = (operations) => {
       <div class="column is-size-7 is-2 has-text-centered"><span class="has-background-info-dark has-text-white radius p-1">${operations[i].categoria}</span></div>
       <div class="column is-size-6 is-3 has-text-centered">${operations[i].fecha}</div>
       <div class="column is-size-6 is-2 has-text-centered has-text-weight-bold ${color}">${monto}</div>
-      <div class="column is-2 px-0">
-        <a href="#" class="is-size-7 mr-2" onclick="editOperation('${operations[i].id}')">Editar</a>
-        <a href="#" class="is-size-7" onclick="deleteOperation('${operations[i].id}')">Eliminar</>
+      <div class="column">
+        <button class=" button is-info is-inverted is-small" onclick="editOperation('${operations[i].id}')"><i class="far fa-edit"></i></button>
+        <button class="button is-danger is-inverted is-small" onclick="deleteOperation('${operations[i].id}')"><i class="fas fa-trash-alt"></i></button>
       </div>
     </div>
     `;
@@ -240,6 +240,9 @@ const editOperation = (operation) => {
   operationEditType.value = operations[position].tipo;
   operationEditCategories.value = operations[position].categoria;
   operationEditDate.value = operations[position].fecha;
+  if(operationEditType.value === 'Gasto'){
+    operationEditAmount.value = Number(operations[position].monto) * -1;
+  }
   return position;
 };
 
@@ -250,8 +253,13 @@ btnEditOperation.addEventListener("click", () => {
   operations[position].categoria = operationEditCategories.value;
   operations[position].fecha = operationEditDate.value;
 
+  if(operations[position].tipo === 'Gasto'){
+    operations[position].monto = Number(operationEditAmount.value) * -1;
+  }
+
   localStorage.setItem("operacionesStorage", JSON.stringify(operations));
   operationsHtml(operations);
+  balanceHTML(operations);
 
   ShowSectionOperations();
 });
@@ -264,6 +272,7 @@ const deleteOperation = (operation) => {
     operations.splice(value, 1);
     localStorage.setItem("operacionesStorage", JSON.stringify(operations));
     operationsHtml(operations);
+    balanceHTML(operations);
   }
 };
 
@@ -274,7 +283,7 @@ const deleteOperation = (operation) => {
 
 btnAddCategory.addEventListener("click", () => {
   const newCategory = inputCategories.value;
-  categories.push({ id: categories.length, nombre: newCategory });
+  categories.push({ id: uuid.v4(), nombre: newCategory });
 
   localStorage.setItem("categoriasStorage", JSON.stringify(categories));
   const getCategoriesStorage = JSON.parse(
@@ -302,19 +311,31 @@ const hideEditSection = () => {
 };
 
 // EDITAR UNA CATEGORIA
-let index;
+let resultado;
 const editCategory = (category) => {
   hideSectionsEdit();
-  index = categories.findIndex((elem) => elem.id === Number(category));
+  const index = categories.findIndex((elem) => elem.id === category);
   inputEditCategory.value = categories[index].nombre;
-  return index;
+  resultado =  {i: index, valor: inputEditCategory.value};
+  return resultado
 };
 
 btnEditCategory.addEventListener("click", () => {
-  categories[index].nombre = inputEditCategory.value;
+  categories[resultado.i].nombre = inputEditCategory.value;
   localStorage.setItem("categoriasStorage", JSON.stringify(categories));
   categoriesHTML(categories);
   categoriesSelect(categories);
+
+  operations.forEach(() => {
+    const posicion = operations.findIndex(
+      (operation) => operation.categoria === resultado.valor);
+    if (posicion >= 0) {
+      operations[posicion].categoria = inputEditCategory.value
+      localStorage.setItem("operacionesStorage", JSON.stringify(operations))
+    }
+    operationsHtml(operations);
+    balanceHTML(operations);
+  });
 
   hideEditSection();
 });
@@ -322,14 +343,25 @@ btnEditCategory.addEventListener("click", () => {
 // ELIMINAR UNA CATEGORIA
 
 const deleteCategory = (category) => {
-
-  const value = categories.findIndex((elem) => elem.id == category);
+  const categoryName = categories.find((elem) => elem.id === category);
+  const value = categories.findIndex((elem) => elem.id === category);
   if (value >= 0) {
     categories.splice(value, 1);
     localStorage.setItem("categoriasStorage", JSON.stringify(categories));
     categoriesHTML(categories);
     categoriesSelect(categories);
   }
+  operations.forEach(() => {
+    const index = operations.findIndex(
+      (operation) => operation.categoria === categoryName.nombre
+    );
+    if (index >= 0) {
+      operations.splice(index, 1);
+      localStorage.setItem("operacionesStorage", JSON.stringify(operations))
+    }
+    operationsHtml(operations);
+    balanceHTML(operations);
+  });
 };
 
 // PINTAR SECCION CATEGORIA
@@ -340,7 +372,7 @@ const categoriesHTML = (categories) => {
     <div class="columns m-0 is-10 is-offset-2 is-justify-content-space-between">
       <div class="column is-size-7 is-10"><span class="has-background-info-dark has-text-white radius p-1">${categories[i].nombre}</span></div>
       <div class="column is-2 px-0">
-        <a href="#" class="is-size-7 mr-2" onclick="editCategory('${categories[i].id}')" >Editar</a>
+        <a href="#" class="is-size-7 mr-2" onclick="editCategory('${categories[i].id}')">Editar</a>
         <a href="#" class="is-size-7" onclick="deleteCategory('${categories[i].id}')">Eliminar</a>
       </div>
     </div>
@@ -377,16 +409,16 @@ const balanceData = (operaciones) => {
       if (operacion.tipo === "Ganancia") {
         return {
           ...balance,
-          ganancias: balance.ganancias + operacion.monto,
-          total: balance.total + operacion.monto,
+          ganancias: Number(balance.ganancias) + Number(operacion.monto),
+          total: Number(balance.total) + Number(operacion.monto),
         };
       }
 
       if (operacion.tipo === "Gasto") {
         return {
           ...balance,
-          gastos: balance.gastos + operacion.monto,
-          total: balance.total + operacion.monto,
+          gastos: Number(balance.gastos) + Number(operacion.monto),
+          total: Number(balance.total) + Number(operacion.monto),
         };
       }
     },
@@ -473,7 +505,6 @@ const filtrarOperaciones = () => {
   const fecha = filtersDate.value;
   const orden = filtersOrder.value;
 
-  console.log(fecha);
 
   let operaciones = operations;
 
@@ -519,4 +550,90 @@ filtersCategories.addEventListener("change", filtrarOperaciones);
 filtersDate.addEventListener("change", filtrarOperaciones);
 filtersOrder.addEventListener("change", filtrarOperaciones);
 
+
+                                                  // REPORTES
+
+const conReportes = document.getElementById('with-reports');
+const sinReportes = document.getElementById('without-reports');
+const resumenCategGanancia = document.getElementById('resumen-categ-mayor-ganancia');
+const resumenCategGasto = document.getElementById('resumen-categ-mayor-gasto');
+const resumenCategBalance= document.getElementById('resumen-categ-mayor-balance');
+const resumenMesGanancia = document.getElementById('resumen-mes-mayor-ganancia');
+const resumenMesGasto = document.getElementById('resumen-mes-mayor-ganancia');
+const reporteTotalCateg = document.getElementById('report-categories-total');
+const reporteTotalMes = document.getElementById('report-mes-total');
+
+let resultGastosGananciasCateg = {};
+
+const gastosGananciasCateg = (operaciones) =>{
+  if(filtrarTipo('Ganancia', operaciones).length &&
+  filtrarTipo('Gasto', operaciones).length ){
+    sinReportes.classList.add('is-hidden')
+    conReportes.classList.remove('is-hidden')
+  }
+
+  const parcial = [];
+
+  for (let i = 0; i < categories.length; i++) {
+    const categoriaGanancia = operaciones.filter(operacion => operacion.categoria === categories[i].nombre && operacion.tipo === 'Ganancia').reduce((inicial, current) => Number(inicial) + Number(current.monto) ,0)
+
+    const categoriaGasto = operaciones.filter(operacion => operacion.categoria === categories[i].nombre && operacion.tipo === 'Gasto').reduce((inicial, current) => Number(inicial) + Number(current.monto) ,0)
+
+    const categoriaBalance = categoriaGanancia + categoriaGasto
+    parcial.push({nombre: categories[i].nombre, ganancia: categoriaGanancia, gasto: categoriaGasto, balance: categoriaBalance})
+  }
+
+  resultGastosGananciasCateg = parcial.filter(elemen => elemen.ganancia > 0 || elemen.gasto < 0 )
+  console.log(resultGastosGananciasCateg);
+
+  const max = Math.max(...resultGastosGananciasCateg.map(valor => valor.ganancia))
+  const mayorGanancia = resultGastosGananciasCateg.find(elemen => elemen.ganancia === max)
+  resumenHTML(mayorGanancia, resumenCategGanancia, 'ganancia', 'has-text-success')
+
+  const min = Math.min(...resultGastosGananciasCateg.map(valor => valor.gasto))
+  const mayorGasto = resultGastosGananciasCateg.find(elemen => elemen.gasto === min)
+  resumenHTML(mayorGasto, resumenCategGasto, 'gasto', 'has-text-danger')
+
+  
+  const maxBalance = Math.max(...resultGastosGananciasCateg.map(valor => valor.balance))
+  const mayorBalance = resultGastosGananciasCateg.find(elemen => elemen.balance === maxBalance)
+  resumenHTML(mayorBalance, resumenCategBalance, 'balance')
+
+  
+
+  totalesPorCategHTML(resultGastosGananciasCateg)
+  return resultGastosGananciasCateg
+ 
+};
+
+
+const totalesPorCategHTML = (array) =>{
+  reporteTotalCateg.innerHTML = " ";
+  for (let i = 0; i < array.length; i++) {
+    const box = `
+    <div class="columns has-text-weight-medium m-0">
+            <div class="column has-text-centered is-3">${array[i].nombre}</div>
+            <div class="column has-text-centered has-text-success is-3">$${array[i].ganancia}</div>
+            <div class="column has-text-centered has-text-danger is-3">$${array[i].gasto}</div>
+            <div class="column has-text-centered is-3">$${array[i].balance}</div>
+          </div>
+    `
+    reporteTotalCateg.insertAdjacentHTML("beforeend", box);
+    
+  }
+}
+const resumenHTML = (objeto, caja, tipo, color) => {
+  console.log(objeto);
+  caja.innerHTML = ' ';
+ 
+  const box = `
+  <div class="columns has-text-weight-medium m-0 is-6">
+    <div class="column">${objeto.nombre}</div>
+    <div class="column ${color}">$${objeto[tipo]}</div>
+  </div>
+  `
+  caja.insertAdjacentHTML("beforeend", box);
+}
+
+console.log(gastosGananciasCateg(operations))
 filtrarOperaciones();
