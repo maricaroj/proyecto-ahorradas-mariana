@@ -30,9 +30,9 @@
   <header>
     <!-- INICIO BARRA NAVEGACION -->
     <nav class="navbar has-shadow is-spaced is-info" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
+      <div class="navbar-brand">    
         <div class="navbar-item is-size-2">
-          <i class="fas fa-hand-holding-usd mx-2"></i>
+          <i class="fas fa-hand-holding-usd mx-2" aria-hidden="true"></i>
           <h1 class="is-size-2">AhorrAdas</h1>
         </div>
         <a role="button" id="navbar-burger" class="navbar-burger is-align-self-center" aria-label="menu"
@@ -45,15 +45,15 @@
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end is-size-5">
           <a id="btn-balance" class="navbar-item">
-            <i class="far fa-chart-bar mx-2 "></i>
+            <i class="far fa-chart-bar mx-2" aria-hidden="true"></i>
             Balance
           </a>
           <a id="btn-categories" class="navbar-item">
-            <i class="fas fa-tags mx-2"></i>
+            <i class="fas fa-tags mx-2" aria-hidden="true"></i>
             Categorías
           </a>
           <a id="btn-reports" class="navbar-item">
-            <i class="fas fa-chart-pie mx-2"></i>
+            <i class="fas fa-chart-pie mx-2" aria-hidden="true"></i>
             Reportes
           </a>
         </div>
@@ -89,8 +89,8 @@
           <div class="tile is-child box fit-content">
             <div class="columns is-justify-content-space-between is-flex-wrap-wrap mb-0">
               <p class="subtitle has-text-weight-medium mb-0 px-4">Filtros</p>
-              <button id="btn-hide-filters" class="button is-size-7 is-link is-inverted">Ocultar filtros</button>
-              <button id="btn-show-filters" class="button is-size-7 is-link is-inverted is-hidden">Mostrar filtros</button>
+              <button id="btn-hide-filters" class="button is-size-7 is-link is-inverted" aria-label="ocultar filtros">Ocultar filtros</button>
+              <button id="btn-show-filters" class="button is-size-7 is-link is-inverted is-hidden" aria-label="mostrar filtros">Mostrar filtros</button>
             </div>
             <div id="filters" class="column">
               <div class="py-2">
@@ -137,7 +137,7 @@
           <div class="tile is-child box p-6 ">
             <div class="columns is-justify-content-space-between">
               <p class="subtitle has-text-weight-medium">Operaciones</p>
-              <button id="btn-new-operation" class="button is-link is-size-7-mobile">+ Nueva Operación</button>
+              <button id="btn-new-operation" class="button is-link is-size-7-mobile" aria-label="agregar nueva operación">+ Nueva Operación</button>
             </div>
             <div id="without-operations">
               <div class="column is-6 is-offset-3">
@@ -210,10 +210,10 @@
         </div>
         <div class="field is-grouped is-justify-content-flex-end pt-5">
           <p class="control">
-            <button id="btn-cancel-operation" class="button">Cancelar</button>
+            <button id="btn-cancel-operation" class="button" aria-label="cancelar nueva operación">Cancelar</button>
           </p>
           <p class="control">
-            <button id="btn-add-operation" class="button is-link">Agregar</button>
+            <button id="btn-add-operation" class="button is-link" aria-label="confirmar nueva operación">Agregar</button>
           </p>
         </div>
       </div>
@@ -264,10 +264,10 @@
         </div>
         <div class="field is-grouped is-justify-content-flex-end pt-5">
           <p class="control">
-            <button id="btn-cancel-edit-operation" class="button" onclick="ShowSectionOperations()">Cancelar</button>
+            <button id="btn-cancel-edit-operation" class="button" onclick="ShowSectionOperations()" aria-label="cancelar editar operación">Cancelar</button>
           </p>
           <p class="control">
-            <button id="btn-edit-operation" class="button is-link">Editar</button>
+            <button id="btn-edit-operation" class="button is-link" aria-label="confirmar editar operación">Editar</button>
           </p>
         </div>
       </div>
@@ -285,7 +285,7 @@
               <input id="category-name" class="input is-small" type="text">
             </div>
             <div class="control">
-              <button id="btn-add-category" class="button is-link is-small">Agregar</button>
+              <button id="btn-add-category" class="button is-link is-small" aria-label="agregar nueva categoría" >Agregar</button>
             </div>
           </div>
           <div id="categories-list"></div>
@@ -305,8 +305,8 @@
               <input id="edit-category-name" class="input is-small" type="text">
             </div>
             <div class="control">
-              <button id="btn-cancel-edit-category" class="button is-small" onclick="hideEditSection()">Cancelar</button>
-              <button id="btn-edit-category" class="button is-link is-small">Editar</button>
+              <button id="btn-cancel-edit-category" class="button is-small" onclick="hideEditSection()" aria-label="cancelar editar categoría">Cancelar</button>
+              <button id="btn-edit-category" class="button is-link is-small" aria-label="confirmar editar categoría">Editar</button>
             </div>
           </div>
         </div>
@@ -337,25 +337,25 @@
         <div  class="column has-text-weight-medium m-0 mt-6 ">
           <!-- RESUMEN -->
           <p class="subtitle has-text-weight-medium">Resumen</p>
-          <div class="columns m-0 is-mobile is-justify-content-space-between">
-            <div class="column is-6">Categoría con mayor ganancia</div>
-            <div id="resumen-categ-mayor-ganancia"></div>
+          <div class="columns m-0 is-mobile">
+            <div class="column is-three-quarters">Categoría con mayor ganancia</div>
+            <div class="column" id="resumen-categ-mayor-ganancia"></div>
           </div>
-          <div class="columns m-0 is-mobile is-justify-content-space-between">
-            <div class="column is-6">Categoría con mayor gasto</div>
-            <div id="resumen-categ-mayor-gasto"></div>
+          <div class="columns m-0 is-mobile ">
+            <div class="column is-three-quarters">Categoría con mayor gasto</div>
+            <div class="column" id="resumen-categ-mayor-gasto"></div>
           </div>
-          <div class="columns m-0 is-mobile is-justify-content-space-between">
-            <div class="column is-6">Categoría con mayor balance</div>
-            <div id="resumen-categ-mayor-balance"></div>
+          <div class="columns m-0 is-mobile ">
+            <div class="column is-three-quarters">Categoría con mayor balance</div>
+            <div class="column" id="resumen-categ-mayor-balance"></div>
           </div>
-          <div class="columns m-0 is-mobile is-justify-content-space-between mr-5 pr-2">
-            <div class="column is-4">Mes con mayor ganancia</div>
-            <div id="resumen-mes-mayor-ganancia"></div>
+          <div class="columns m-0 is-mobile">
+            <div class="column is-half">Mes con mayor ganancia</div>
+            <div class="column" id="resumen-mes-mayor-ganancia"></div>
           </div>
-          <div class="columns m-0 is-mobile is-justify-content-space-between mr-5 pr-2">
-            <div class="column is-4">Mes con mayor gasto</div>
-            <div id="resumen-mes-mayor-gasto"></div>
+          <div class="columns m-0 is-mobile">
+            <div class="column is-half">Mes con mayor gasto</div>
+            <div class="column" id="resumen-mes-mayor-gasto"></div>
           </div>
         </div>
         <!-- TOTALES POR CATEGORIA -->

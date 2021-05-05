@@ -128,7 +128,7 @@ btnShowFilters.addEventListener("click", () => {
 
 let categories = [
   { id: uuid.v4(), nombre: "Comida" },
-  { id: uuid.v4(), nombre: "Educacion" },
+  { id: uuid.v4(), nombre: "Educación" },
   { id: uuid.v4(), nombre: "Salidas" },
   { id: uuid.v4(), nombre: "Servcios" },
   { id: uuid.v4(), nombre: "Trabajo" },
@@ -619,21 +619,16 @@ const gastosGananciasCateg = (operaciones) => {
   );
 
   const max = Math.max(
-    ...resultGastosGananciasCateg.map((valor) => valor.ganancia)
-  );
+    ...resultGastosGananciasCateg.map((valor) => valor.ganancia));
+
   const mayorGanancia = resultGastosGananciasCateg.find(
     (elemen) => elemen.ganancia === max
   );
-  resumenCategHTML(
-    mayorGanancia,
-    resumenCategGanancia,
-    "ganancia",
-    "has-text-success"
-  );
+  resumenCategHTML(mayorGanancia, resumenCategGanancia, "ganancia", "has-text-success");
 
   const min = Math.min(
-    ...resultGastosGananciasCateg.map((valor) => valor.gasto)
-  );
+    ...resultGastosGananciasCateg.map((valor) => valor.gasto));
+
   const mayorGasto = resultGastosGananciasCateg.find(
     (elemen) => elemen.gasto === min
   );
@@ -668,11 +663,10 @@ const totalesPorCategHTML = (array) => {
 
 const resumenCategHTML = (objeto, caja, tipo, color) => {
   caja.innerHTML = " ";
-
   const box = `
-  <div class="columns has-text-weight-medium m-0 is-6">
+  <div class="columns">
     <div class="column"><span class="has-background-info-dark is-size-7 has-text-white radius p-1">${objeto.nombre}</span></div>
-    <div class="column ${color}">$${objeto[tipo]}</div>
+    <div class="column ${color} has-text-right">$${objeto[tipo]}</div>
   </div>
   `;
   caja.insertAdjacentHTML("beforeend", box);
@@ -709,12 +703,7 @@ const obtenerResumenMeses = (operaciones) => {
       resumen.mayorGasto.monto = operacion.monto;
     }
 
-    resumenMesesHTML(
-      resumen,
-      resumenMesGanancia,
-      "mayorGanancia",
-      "has-text-success"
-    );
+    resumenMesesHTML( resumen, resumenMesGanancia, "mayorGanancia", "has-text-success");
     resumenMesesHTML(resumen, resumenMesGasto, "mayorGasto", "has-text-danger");
     return resumen;
   }, resumen);
@@ -722,11 +711,10 @@ const obtenerResumenMeses = (operaciones) => {
 
 const resumenMesesHTML = (objeto, caja, tipo, color) => {
   caja.innerHTML = " ";
-
   const box = `
   <div class="columns has-text-weight-medium m-0">
-    <div class="column has-text-right is-10">${objeto[tipo].fecha}</div>
-    <div class="column has-text-right ${color}">$${objeto[tipo].monto}</div>
+    <div class="column has-text-right is-9 m-0 p-0">${objeto[tipo].fecha}</div>
+    <div class="column has-text-right ${color} m-0 p-0">$${objeto[tipo].monto}</div>
   </div>
   `;
   caja.insertAdjacentHTML("beforeend", box);
@@ -734,7 +722,6 @@ const resumenMesesHTML = (objeto, caja, tipo, color) => {
 
 const totalesPorMesHTML = (objeto) => {
   reporteTotalMes.innerHTML = "";
-
   for (const key in objeto) {
     const box = `
     <div class="columns has-text-weight-medium m-0">
